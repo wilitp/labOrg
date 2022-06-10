@@ -3,20 +3,16 @@
 .equ SCREEN_HEIGHT, 		480
 .equ BITS_PER_PIXEL,  	32
 
-
-// x1: y del punto inicial
-// x2: x del punto inicial  
+// x1: x del punto inicial
+// x2: y del punto inicial  
 // x3: ancho
 // x4: alto
 // x10: color(usamos w10 porque el pixel ocupa 32 bits)
 rectangle:
-	
 	mov x11, 0 // contador de filas
 	rows_loop:		
-		sub x1, x1, x9
 		mov x9, 0 // contador de columna por fila, lo reiniciamos para cada fila pintada
-		row_loop:	
-			
+		row_loop:		
 			// Llamada a pixel dir
 			sub sp, sp, 64	
 			stur x30, [sp, 56] 
@@ -27,6 +23,8 @@ rectangle:
 			stur x9, [sp, 16]
 			stur x10, [sp, 8]
 			stur x11, [sp, 0]
+			add x1, x9, x1
+			add x2, x11, x2
 			bl utils.pixeldir
 			ldur x11, [sp, 0]
 			ldur x10, [sp, 8]
@@ -40,12 +38,9 @@ rectangle:
 
 			stur w10, [x0]// pintar el punto
 			add x9, x9, 1
-			add x1, x1, 1
 			cmp x9, x3
 			b.lt row_loop
 		add x11, x11, 1
-		add x2, x2, 1
-
 		cmp x11, x4
 		b.lt rows_loop
 	ret
@@ -68,14 +63,36 @@ main:
 	movz x10, 0x77, lsl 16
 	movk x10, 0xF585, lsl 00
 	
-	mov x1, 10
-	mov x2, 10
-	mov x3, 20
-	mov x4, 40
-	bl rectangle
+	mov x1, 0
+	mov x2, 0
+	mov x3, 50
+	mov x4, 50
 
-	//---------------------------------------------------------------
-	// Infinite Loop 
+	mov x6, 5
+
+main_loop:
+
+	bl utils.save_registers
+	movz x10, 0x77, lsl 16
+	movk x10, 0xF585, lsl 00
+	bl rectangle
+	mov x5,300
+	bl utils.delay 
+	bl utils.restore_registers
+	
+	bl utils.save_registers
+	mov x10, 0
+	mov x1, 0
+	mov x2, 0
+	mov x3, 640
+	mov x4, 480
+	bl rectangle
+	bl utils.restore_registers
+
+	add x0,x0,50	
+	subs x6,x6,1
+	bne main_loop
+
 
 InfLoop: 
 	b InfLoop
