@@ -20,33 +20,36 @@ main:
 	movz x10, 0x77, lsl 16
 	movk x10, 0xF585, lsl 00
 
-	mov x1, 100
-	mov x2, 100
+	mov x1, 0
+	mov x2, 0
 	mov x3, 50
 	mov x4, 50
+
+	mov x6, 5
+
+main_loop:
+
+	bl utils.save_registers
+	movz x10, 0x77, lsl 16
+	movk x10, 0xF585, lsl 00
 	bl rectangle
-
-	mov x1, 150
-	mov x2, 150
-	mov x3, 50
-	mov x4, 50
-	bl rectangle
-
-	mov x1, 175
-	mov x2, 125
-	mov x3, 25
-	bl circle
-
-	mov x1, 125
-	mov x2, 175
-	mov x3, 25
-	bl half_circle
-
-
+	mov x5,300
+	bl utils.delay 
+	bl utils.restore_registers
 	
+	bl utils.save_registers
+	mov x10, 0
+	mov x1, 0
+	mov x2, 0
+	mov x3, 640
+	mov x4, 480
+	bl rectangle
+	bl utils.restore_registers
 
-	//---------------------------------------------------------------
-	// Infinite Loop 
+	add x0,x0,50	
+	subs x6,x6,1
+	bne main_loop
+
 
 InfLoop: 
 	b InfLoop
