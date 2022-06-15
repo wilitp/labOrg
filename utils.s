@@ -19,3 +19,18 @@ utils.pixeldir:
 	add x0, x20, x0
 	ret
 
+// Args:
+// 		x20: base del frame
+// 		x1: x
+// 		x2: y
+// Resumen:
+//    Pinta el punto (x, y) del color en x10
+.globl utils.pixelpaint
+utils.pixelpaint:
+	mov x9, SCREEN_WIDTH
+	mul x2, x2, x9 
+	add x0, x1, x2
+	lsl x0, x0, 2
+	add x0, x20, x0
+	stur w10, [x0]
+	ret
