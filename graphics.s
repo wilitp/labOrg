@@ -167,4 +167,223 @@ rocket_position_reg_changer_exit:
     ret
 
     
+// Args:
+// 		x20: base del frame
+// 		x1: x
+// 		x2: y
+//    x5: escala
+// Resumen:
+//   	Pinta un cohete con (x, y) como punto medio inferior.
+.globl graphics.rocket
+graphics.rocket:
+	
+	// porcion roja oscura
+	movz x10, 0x00bf, lsl 16
+	movk x10, 0x0202, lsl 0
 
+	sub x1, x2, 4 
+	sub x2, x2, 20
+	mov x3, 9
+	mov x4, 18
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// Punta
+	// - Linea 1
+	sub x2, x2, 1
+	movz x10, 0x00e6, lsl 16
+	movk x10, 0x0202, lsl 0
+
+	mov x3, 9
+	mov x4, 1
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea 2
+	sub x2, x2, 1
+	add x1, x1, 1
+
+	mov x3, 7
+	mov x4, 1
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea 3
+	sub x2, x2, 1
+	add x1, x1, 1
+
+	mov x3, 5
+	mov x4, 1
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea 4
+	sub x2, x2, 1
+	add x1, x1, 1
+
+	mov x3, 3
+	mov x4, 1
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea 5
+	sub x2, x2, 1
+	add x1, x1, 1
+
+	mov x3, 1
+	mov x4, 1
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// Base
+
+	// - Linea 1
+	add x2, x2, 23
+	sub x1, x1, 3
+	movz x10, 0x00e6, lsl 16
+	movk x10, 0x0202, lsl 0
+
+	mov x3, 7
+	mov x4, 1
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea 2
+	add x2, x2, 1
+	sub x1, x1, 1
+
+	mov x3, 9
+	mov x4, 1
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// Ala izquierda
+	// - Linea(vertical) 1
+	sub x1, x1, 4
+	sub x2, x2, 2
+	mov x3, 1
+	mov x4, 3
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea(vertical) 2
+	add x1, x1, 1
+	sub x2, x2, 2
+	mov x3, 1
+	mov x4, 4
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea(vertical) 3
+	add x1, x1, 1
+	sub x2, x2, 2
+	mov x3, 1
+	mov x4, 5
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea(vertical) 4
+	add x1, x1, 1
+	sub x2, x2, 2
+	mov x3, 1
+	mov x4, 6
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// Ala derecha
+	// - Linea(vertical) 1
+	add x1, x1, 13
+	add x2, x2, 6
+	mov x3, 1
+	mov x4, 3
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea(vertical) 2
+	sub x1, x1, 1
+	sub x2, x2, 2
+	mov x3, 1
+	mov x4, 4
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea(vertical) 3
+	sub x1, x1, 1
+	sub x2, x2, 2
+	mov x3, 1
+	mov x4, 5
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// - Linea(vertical) 4
+	sub x1, x1, 1
+	sub x2, x2, 2
+	mov x3, 1
+	mov x4, 6
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// Ventana	
+
+	// Linea derecha
+	sub x1, x1, 3
+	sub x2, x2, 7
+	mov x3, 1
+	mov x4, 3
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// Linea izquierda
+	sub x1, x1, 4
+	mov x3, 1
+	mov x4, 3
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// Linea arriba
+	add x1, x1, 1
+	sub x2, x2, 1
+	mov x3, 3
+	mov x4, 1
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// Linea abajo
+	add x2, x2, 4
+	mov x3, 3
+	mov x4, 1
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+	// Cuadrado del medio
+	movz x10, 0x0078, lsl 16
+	movk x10, 0x0101
+	sub x2, x2, 3
+	mov x3, 3
+	mov x4, 3
+	bl utils.save_registers
+	bl rectangle
+	bl utils.restore_registers
+
+
+	ret
