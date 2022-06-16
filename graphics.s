@@ -127,6 +127,26 @@ graphics.star_2x2:
     stur x11,[x12, 4]
     ret
 
+
+
+
+.global graphics.rocket_complete_fire
+graphics.rocket_complete_fire:
+    sub sp, sp, 8
+    stur x30,[sp, 0]
+    add x2, x2, 0
+	add x1, x1, 1
+	mov x3, x7
+	movz x10, 0x00ff, lsl 16
+    movk x10, 0xbf00, lsl 0
+	bl graphics.rocket_fire
+	sub x3,x3,15
+	movz x10, 0x00FF, lsl 16
+    movk x10, 0xff00, lsl 0
+	bl graphics.rocket_fire
+    ldur x30,[sp, 0]
+    add sp, sp, 8
+    ret
 .global graphics.rocket_fire
 //se printea el fuego abaixo du cohetiño
 //parametriños:
@@ -136,6 +156,8 @@ graphics.star_2x2:
 graphics.rocket_fire:
 sub sp, sp, 8
 stur x30,[sp, 0]
+cmp x3, 0
+ble fire_exit
 bl utils.save_registers 
     add x5, x2, x3  //x5 seria la altura del fuego
 rocket_fire_loop1:
@@ -168,9 +190,10 @@ rocket_fire_loop1:
             bge rocket_fire_loop2
         sub x5, x5, 1
         sub x7, x5, x2 
-        subs x7, x7, 15
+        subs x7, x7, 0
         bge rocket_fire_loop1
 bl utils.restore_registers
+fire_exit:
 ldur x30,[sp, 0]
 add sp, sp, 8
 ret 
@@ -198,6 +221,10 @@ ret
 .global graphics.rocket_position_reg_changer
 
 graphics.rocket_position_reg_changer:
+    cmp x2, 400
+    bge rocket_position_reg_changer_stay
+    cmp x2, 385
+    bge rocket_position_reg_changer_kill_fire
     add x12, x12, 1
     lsr x18, x2, 6
     cmp x12, x18
@@ -206,7 +233,13 @@ graphics.rocket_position_reg_changer:
     add x2, x2, 1
 rocket_position_reg_changer_exit:
     ret
-
+rocket_position_reg_changer_stay:
+    mov x7, -2
+    ret
+rocket_position_reg_changer_kill_fire:
+    add x2, x2, 1
+    sub x7,x7 ,6
+    ret
     
 // Args:
 // 		x20: base del frame
@@ -226,7 +259,7 @@ graphics.rocket:
 
 	mov x9, 4
 	mul x6, x5, x9
-	sub x1, x2, x6
+	sub x1, x1, x6
 
 	mov x9, 20
 	mul x6, x5, x9
@@ -560,5 +593,5 @@ graphics.rocket:
 
 
 	ldur x30, [sp]
-	sub sp, sp, 8
+	add sp, sp, 8
 	ret

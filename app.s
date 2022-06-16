@@ -3,39 +3,6 @@
 .equ SCREEN_HEIGHT, 		480
 .equ BITS_PER_PIXEL,  	32
 
-// x1: x del punto inicial
-// x2: y del punto inicial  
-// x3: ancho
-// x4: alto
-// x10: color(usamos w10 porque el pixel ocupa 32 bits)
-rectangle:
-	mov x11, 0 // contador de filas
-	rows_loop:		
-		mov x9, 0 // contador de columna por fila, lo reiniciamos para cada fila pintada
-		row_loop:		
-			// Llamada a pixel dir
-			sub sp, sp, 32	
-			stur x30, [sp, 16] 
-			stur x2, [sp, 8]
-			stur x9, [sp, 0]
-			add x1, x9, x1
-			add x2, x11, x2
-			bl utils.pixeldir
-			ldur x9, [sp, 0]
-			sub x1, x1,x9
-			ldur x2, [sp, 8]
-			ldur x30, [sp, 16] 
-			add sp, sp, 32	
-
-			stur w10, [x0]// pintar el punto
-			add x9, x9, 1
-			cmp x9, x3
-			b.lt row_loop
-		add x11, x11, 1
-		cmp x11, x4
-		b.lt rows_loop
-	ret
-
 .globl main
 main:
 	// X0 contiene la direccion base del framebuffer
@@ -60,17 +27,11 @@ main_loop:
 
 	bl utils.save_registers
 	bl graphics.background	//todo el fondo en negro, las estrellas y la luna
-	bl rectangle	//aca deberia printearse el cohete
-	add x2, x2, 35
-	add x1, x1, 11
-	mov x3, x7
-	movz x10, 0x00FF, lsl 16
-    movk x10, 0xff00, lsl 0
-	bl graphics.rocket_fire
-	movz x10, 0x00ff, lsl 16
-    movk x10, 0xbf00, lsl 0
-	sub x3,x3,12
-	bl graphics.rocket_fire
+	mov x5, 4
+	bl utils.save_registers
+	bl graphics.rocket	//aca deberia printearse el cohete
+	bl utils.restore_registers
+	bl graphics.rocket_complete_fire
 	bl utils.delay 
 	bl utils.restore_registers
 	
