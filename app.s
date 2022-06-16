@@ -54,7 +54,7 @@ main:
 	mov x7, 20	
 	mov x12, 0
 
-	mov x6, 1000	//cantidad de veces qeu ejecuto el ciclo principal
+	mov x6, 2000	//cantidad de veces qeu ejecuto el ciclo principal
 	mov x5, 1		//en x5 yo tengo el delay entre frames, como voy incrementando el delay entre frames parece que se enlentece el cohete
 main_loop:
 
@@ -82,7 +82,6 @@ main_loop:
 	subs x6,x6,1
 	bl virtual_frame.show_frame
 	bne main_loop
-
 
 InfLoop: 
 	b InfLoop

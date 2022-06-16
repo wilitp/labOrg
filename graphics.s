@@ -9,12 +9,15 @@
 //para el funcionamiento se va a usar el registro 11, 12
 //esta funcion debe ocupar el menor tiempo posible para reducir panatallasos(aborresables)
 graphics.background:
-    sub sp,sp,24
+    sub sp,sp,32
     stur x11,[sp,0]
     stur x12,[sp,8]
     stur x30,[sp,16]
+    stur x13,[sp,24]
     movz x11,0x0004,lsl 16
     movk x11,0xB000,lsl 0
+
+
 background_loop:
         lsl x12,x11,2
         add x12,x12,x20
@@ -26,43 +29,77 @@ background_loop:
     movz x11, 0x00ff, lsl 16
     movk x11, 0xffff, lsl 0 
 
-    mov x12, 1000
-    bl graphics.star_2x2    
-    mov x12, 3000
-    bl graphics.star_3x3    
-    mov x12, 6000
-    bl graphics.star_3x3    
-    mov x12, 24000
-    bl graphics.star_2x2    
-    mov x12, 30000
-    bl graphics.star_3x3    
-    mov x12, 45000
-    bl graphics.star_3x3    
-    mov x12, 60000
-    bl graphics.star_3x3    
-    mov x12, 60100
-    bl graphics.star_3x3    
+mov x12, 3270
+   bl graphics.star_3x3  
+   mov x12, 6000
+   bl graphics.star_3x3 
+   mov x12, 24000
+   bl graphics.star_2x2 
+   mov x12, 28500
+   bl graphics.star_3x3  //
+   mov x12, 30000
+   bl graphics.star_3x3
+   mov x12, 33500
+   bl graphics.star_2x2  //
+   mov x12, 33570
+   bl graphics.star_2x2  //
+   mov x12, 45000
+   bl graphics.star_3x3
+   mov x12,5270
+   bl graphics.star_3x3
+   mov x12,48500
+   bl graphics.star_2x2 // 
+   mov x12,47700
+   bl graphics.star_3x3
+   mov x12, 43000
+   bl graphics.star_2x2  //
+   mov x12, 43010
+   bl graphics.star_3x3
+   mov x12,49350
+   bl graphics.star_3x3
+   mov x12, 60000
+   bl graphics.star_3x3
 
     //por ultimo llamo a la funcion que me grafica la luna con sus parametros
     bl utils.save_registers
+    //lunaa
 	mov x1, 320
 	mov x2, 860
 	mov x3, 500
 	movz x10, 0x00D0, lsl 16
 	movk x10, 0xD0D0, lsl 0
 	bl half_circle
-	bl utils.restore_registers
+///////////////////
+	mov x1, 360
+	mov x2, 420 
+	mov x3, 40
+	movz x10, 0x00e0, lsl 16
+	movk x10, 0xe0e0, lsl 0
+	bl circle
+	mov x1, 360
+	mov x2, 420 
+	mov x3, 30
+	movz x10, 0x00c0, lsl 16
+	movk x10, 0xc0c0, lsl 0
+	bl circle
+    bl utils.restore_registers
+    /////
+
 
     ldur x12,[sp,8]
     ldur x11,[sp,0]
     ldur x30,[sp,16]
-    add sp,sp,24
+    ldur x13,[sp,24]
+    add sp,sp,32
     ret
 
 
 //dibuja una estrella comenzando por x12*4 de colo x11
 graphics.star_3x3:
     lsl x12,x12,4
+    lsr x13, x6, 2  //efecto movimiento
+    lsl x13, x13, 2 //efecto movimiento
+    add x12, x12, x13   //efecto movimiento
     add x12,x20,x12
     stur x11,[x12, 0]
     stur x11,[x12, 4]
@@ -79,6 +116,9 @@ graphics.star_3x3:
 
 graphics.star_2x2:
     lsl x12,x12,4
+    lsr x13, x6, 4  //efecto movimiento
+    lsl x13, x13, 2 //efecto movimiento
+    add x12, x12, x13   //efecto movimiento
     add x12,x20,x12
     stur x11,[x12, 0]
     stur x11,[x12, 4]
@@ -91,7 +131,7 @@ graphics.star_2x2:
 //se printea el fuego abaixo du cohetiño
 //parametriños:
 //  1) x3 : estado del fuego 1-apagaduki ... 50 etoNoHeCocaPapi 
-//  2) x4 : estado anterior para ir variando, la funcion se encarga de ir mutandolo. Por eso es importante que nadie lo cambie 
+//  no implementado -> 2) x4 : estado anterior para ir variando, la funcion se encarga de ir mutandolo. Por eso es importante que nadie lo cambie 
 //  3) x1, x2 : x e y position (mandar la misma que el coethe para que no quede patiadelix)
 graphics.rocket_fire:
 sub sp, sp, 8
@@ -159,7 +199,8 @@ ret
 
 graphics.rocket_position_reg_changer:
     add x12, x12, 1
-    cmp x12, 1
+    lsr x18, x2, 6
+    cmp x12, x18
     blt rocket_position_reg_changer_exit
     mov x12, 0
     add x2, x2, 1
