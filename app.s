@@ -21,8 +21,9 @@ main:
 	mov x7, 20	
 	mov x12, 0
 	mov x19, 0
+	mov x22, 0
 
-	mov x6, 2000	//cantidad de veces qeu ejecuto el ciclo principal
+	mov x6, 2500	//cantidad de veces qeu ejecuto el ciclo principal
 	mov x5, 2	//en x5 yo tengo el delay entre frames, como voy incrementando el delay entre frames parece que se enlentece el cohete
 main_loop:
 	bl utils.save_registers
@@ -30,6 +31,7 @@ main_loop:
 	mov x5, 4	//tamaño del cohetiño
 	bl utils.save_registers
 	bl graphics.rocket	//aca deberia printearse el cohete
+	bl amongus
 	bl utils.restore_registers	
 
 	bl graphics.rocket_complete_fire	//fucncion que se encarga de mostrar el fuego segun lo que hay en x1,x2 y x7(nivel del fuego)

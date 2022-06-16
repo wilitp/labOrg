@@ -4,11 +4,16 @@
 // 		x2: y
 .globl amongus
 amongus:
+	cmp x22, 1
+	blt amongus_exit
+	cmp x22, 50
+	blt amongus_increment_cont
+	mov x1, 300
+    mov x2, 410
 	sub sp, sp, 1
 	stur x30, [sp]
 	// primero el contorno, mas o menos de izquierda a derecha
 	mov x10, 0
-
 	sub x1, x1, 14
 	sub x2, x2, 24
 	bl utils.save_registers
@@ -239,6 +244,11 @@ amongus:
 	ldur x30, [sp]
 	add sp, sp, 1
 	ret
+amongus_increment_cont:
+	add x22, x22, 1
+amongus_exit:
+	ret
+
 
 
 

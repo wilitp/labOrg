@@ -71,7 +71,7 @@ mov x12, 3270
 	movz x10, 0x00D0, lsl 16
 	movk x10, 0xD0D0, lsl 0
 	bl half_circle
-///////////////////
+/////////////////// asteroides
 	mov x1, 360
 	mov x2, 420 
 	mov x3, 40
@@ -81,6 +81,18 @@ mov x12, 3270
 	mov x1, 360
 	mov x2, 420 
 	mov x3, 30
+	movz x10, 0x00c0, lsl 16
+	movk x10, 0xc0c0, lsl 0
+	bl circle
+	mov x1, 160
+	mov x2, 430
+	mov x3, 30
+	movz x10, 0x00e0, lsl 16
+	movk x10, 0xe0e0, lsl 0
+	bl circle
+	mov x1, 160
+	mov x2, 430 
+	mov x3, 20
 	movz x10, 0x00c0, lsl 16
 	movk x10, 0xc0c0, lsl 0
 	bl circle
@@ -223,24 +235,38 @@ ret
 .global graphics.rocket_position_reg_changer
 
 graphics.rocket_position_reg_changer:
+    sub sp, sp, 8
+    stur x30,[sp]
     cmp x2, 400
     bge rocket_position_reg_changer_stay
-    cmp x2, 390
+    cmp x2, 385
     bge rocket_position_reg_changer_kill_fire
     add x12, x12, 1
-    lsr x18, x2, 6
+    lsr x18, x2, 7
     cmp x12, x18
     blt rocket_position_reg_changer_exit
     mov x12, 0
     add x2, x2, 1
 rocket_position_reg_changer_exit:
+    ldur x30,[sp]
+    add sp,sp,8
     ret
 rocket_position_reg_changer_stay:
     mov x7, -2
+    bl utils.save_registers
+    bl utils.restore_registers
+    cmp x22, 0
+    bne skip_amongus
+    mov x22, 1
+skip_amongus:
+    ldur x30,[sp]
+    add sp,sp,8
     ret
 rocket_position_reg_changer_kill_fire:
     add x2, x2, 1
     sub x7,x7 ,6
+    ldur x30,[sp]
+    add sp,sp,8
     ret
     
 // Args:
