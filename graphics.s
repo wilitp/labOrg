@@ -253,9 +253,9 @@ graphics.rocket:
 	sub sp, sp, 8
 	stur x30, [sp]
 	
-	// porcion roja oscura
-	movz x10, 0x00bf, lsl 16
-	movk x10, 0x0202, lsl 0
+	// porcion gris 
+	movz x10, 0x00C0, lsl 16
+	movk x10, 0xC0C0, lsl 0
 
 	mov x9, 4
 	mul x6, x5, x9
@@ -280,9 +280,8 @@ graphics.rocket:
 	// Punta
 	// - Linea 1
 	sub x2, x2, x5
-	movz x10, 0x00e6, lsl 16
-	movk x10, 0x0202, lsl 0
-
+    movz x10, 0x0078, lsl 16
+	movk x10, 0x0101, lsl 0
 	mov x9, 9
 	mul x6, x5, x9
 	mov x3, x6
@@ -352,8 +351,9 @@ graphics.rocket:
 	mov x9, 3
 	mul x6, x5, x9
 	sub x1, x1, x6
-	movz x10, 0x00e6, lsl 16
-	movk x10, 0x0202, lsl 0
+    
+	movz x10, 0x0078, lsl 16
+	movk x10, 0x0101, lsl 0
 
 	mov x9, 7
 	mul x6, x5, x9
@@ -580,8 +580,8 @@ graphics.rocket:
 	bl utils.restore_registers
 
 	// Cuadrado del medio
-	movz x10, 0x0078, lsl 16
-	movk x10, 0x0101
+	movz x10, 0x0000, lsl 16
+	movk x10, 0x0080
 	mov x9, 3
 	mul x6, x5, x9
 	sub x2, x2, x6
