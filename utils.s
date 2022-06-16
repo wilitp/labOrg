@@ -53,10 +53,10 @@ delay_ret:
 	ret
 
 
-//guarda los registros del 0 al 9
+//guarda los registros del 0 al 10
 .global utils.save_registers
 utils.save_registers:
-	sub sp,sp,80	
+	sub sp,sp,112	
 	stur x0,[sp,0]
 	stur x1,[sp,8]
 	stur x2,[sp,16]
@@ -67,6 +67,10 @@ utils.save_registers:
 	stur x7,[sp,56]
 	stur x8,[sp,64]
 	stur x9,[sp,72]
+	stur x10,[sp,80]
+	stur x11,[sp,88]
+	stur x12,[sp,96]
+	stur x13,[sp,104]
 	ret
 
 //actualiza los registros con los valores en el stack
@@ -82,5 +86,31 @@ utils.restore_registers:
 	ldur x7,[sp,56]
 	ldur x8,[sp,64]
 	ldur x9,[sp,72]
-	add sp,sp,80
-	ret
+	ldur x10,[sp,80]
+	ldur x11,[sp,88]
+	ldur x12,[sp,96]
+	ldur x13,[sp,104]
+	add sp,sp,112
+	ret 
+
+
+
+//toma un valor en x0 y devuelve su raiz cuadrada en x0
+.global square_root
+square_root:
+    sub sp, sp, 16
+    stur x1,[sp,8]
+    stur x2,[sp,0]
+    mov x1, 0
+square_root_loop:
+    mul x2, x1, x1
+    cmp x2, x0
+    bge square_root_exit
+    add x1, x1, 1
+    b square_root_loop
+square_root_exit:
+    mov x0, x1
+    ldur x1,[sp,8]
+    ldur x2,[sp,0]
+    add sp, sp, 16
+    ret

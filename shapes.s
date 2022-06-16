@@ -1,4 +1,3 @@
-
 // x1: x del punto inicial
 // x2: y del punto inicial  
 // x3: ancho
