@@ -1,0 +1,10 @@
+//asumo que x0 es un arreglo de typos de 64bitones
+x10 = 50;
+do{
+    x1 = x0[0];
+    x2 = x2 + x1;
+    x1 = x0[1];
+    x2 = x2 + x1;
+    x0 = x0 + 16;
+    x10 = x10 - 1;
+}while(x10 == 0)
