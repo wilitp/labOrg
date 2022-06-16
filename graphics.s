@@ -173,70 +173,97 @@ rocket_position_reg_changer_exit:
 // 		x2: y
 //    x5: escala
 // Resumen:
-//   	Pinta un cohete con (x, y) como punto medio inferior.
+//   	Pinta un cohete con (x, y) como punto medio inferior usando la escala en x5.
 .globl graphics.rocket
 graphics.rocket:
+	sub sp, sp, 8
+	stur x30, [sp]
 	
 	// porcion roja oscura
 	movz x10, 0x00bf, lsl 16
 	movk x10, 0x0202, lsl 0
 
-	sub x1, x2, 4 
-	sub x2, x2, 20
-	mov x3, 9
-	mov x4, 18
+	mov x9, 4
+	mul x6, x5, x9
+	sub x1, x2, x6
+
+	mov x9, 20
+	mul x6, x5, x9
+	sub x2, x2, x6
+
+	mov x9, 9
+	mul x6, x5, x9
+	mov x3, x6
+
+	mov x9, 18
+	mul x6, x5, x9
+	mov x4, x6
+
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// Punta
 	// - Linea 1
-	sub x2, x2, 1
+	sub x2, x2, x5
 	movz x10, 0x00e6, lsl 16
 	movk x10, 0x0202, lsl 0
 
-	mov x3, 9
-	mov x4, 1
+	mov x9, 9
+	mul x6, x5, x9
+	mov x3, x6
+
+	mov x4, x5
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea 2
-	sub x2, x2, 1
-	add x1, x1, 1
+	sub x2, x2, x5
+	add x1, x1, x5
 
-	mov x3, 7
-	mov x4, 1
+	mov x9, 7
+	mul x6, x5, x9
+	mov x3, x6
+
+	mov x4, x5
+
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea 3
-	sub x2, x2, 1
-	add x1, x1, 1
+	sub x2, x2, x5
+	add x1, x1, x5
 
-	mov x3, 5
-	mov x4, 1
+	mov x9, 5
+	mul x6, x5, x9
+	mov x3, x6
+
+	mov x4, x5
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea 4
-	sub x2, x2, 1
-	add x1, x1, 1
+	sub x2, x2, x5
+	add x1, x1, x5
 
-	mov x3, 3
-	mov x4, 1
+	mov x9, 3
+	mul x6, x5, x9
+	mov x3, x6
+
+	mov x4, x5
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea 5
-	sub x2, x2, 1
-	add x1, x1, 1
+	sub x2, x2, x5
+	add x1, x1, x5
 
-	mov x3, 1
-	mov x4, 1
+	mov x3, x5
+	mov x4, x5
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
@@ -244,133 +271,236 @@ graphics.rocket:
 	// Base
 
 	// - Linea 1
-	add x2, x2, 23
-	sub x1, x1, 3
+	mov x9, 23
+	mul x6, x5, x9
+	add x2, x2, x6
+
+	mov x9, 3
+	mul x6, x5, x9
+	sub x1, x1, x6
 	movz x10, 0x00e6, lsl 16
 	movk x10, 0x0202, lsl 0
 
-	mov x3, 7
-	mov x4, 1
+	mov x9, 7
+	mul x6, x5, x9
+	mov x3, x6
+
+	mov x4, x5
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea 2
-	add x2, x2, 1
-	sub x1, x1, 1
+	add x2, x2, x5
+	sub x1, x1, x5
 
-	mov x3, 9
-	mov x4, 1
+	mov x9, 9
+	mul x6, x5, x9
+	mov x3, x6
+	mov x4, x5
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
+
 
 	// Ala izquierda
 	// - Linea(vertical) 1
-	sub x1, x1, 4
-	sub x2, x2, 2
-	mov x3, 1
-	mov x4, 3
+	mov x9, 4
+	mul x6, x5, x9
+	sub x1, x1, x6
+
+	mov x9, 2
+	mul x6, x5, x9
+	sub x2, x2, x6
+
+	mov x3, x5
+
+	mov x9, 3
+	mul x6, x5, x9
+	mov x4, x6
+
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea(vertical) 2
-	add x1, x1, 1
-	sub x2, x2, 2
-	mov x3, 1
-	mov x4, 4
+	add x1, x1, x5
+
+	mov x9, 2
+	mul x6, x5, x9
+	sub x2, x2, x6
+	
+	mov x3, x5
+
+	mov x9, 4
+	mul x6, x5, x9
+	mov x4, x6
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea(vertical) 3
-	add x1, x1, 1
-	sub x2, x2, 2
-	mov x3, 1
-	mov x4, 5
+	add x1, x1, x5
+
+	mov x9, 2
+	mul x6, x5, x9
+	sub x2, x2, x6
+
+	mov x3, x5
+
+	mov x9, 5
+	mul x6, x5, x9
+	mov x4, x6
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea(vertical) 4
-	add x1, x1, 1
-	sub x2, x2, 2
-	mov x3, 1
-	mov x4, 6
+	add x1, x1, x5
+
+	mov x9, 2
+	mul x6, x5, x9
+	sub x2, x2, x6
+
+	mov x3, x5
+
+	mov x9, 6
+	mul x6, x5, x9
+	mov x4, x6
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
+
 
 	// Ala derecha
 	// - Linea(vertical) 1
-	add x1, x1, 13
-	add x2, x2, 6
-	mov x3, 1
-	mov x4, 3
+	mov x9, 13
+	mul x6, x5, x9
+	add x1, x1, x6
+
+	mov x9, 6
+	mul x6, x5, x9
+	add x2, x2, x6
+
+	mov x3, x5
+
+	mov x9, 3
+	mul x6, x5, x9
+	mov x4, x6
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea(vertical) 2
-	sub x1, x1, 1
-	sub x2, x2, 2
-	mov x3, 1
-	mov x4, 4
+	sub x1, x1, x5
+
+	mov x9, 2
+	mul x6, x5, x9
+	sub x2, x2, x6
+
+	mov x3, x5
+
+	mov x9, 4
+	mul x6, x5, x9
+	mov x4, x6
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea(vertical) 3
-	sub x1, x1, 1
-	sub x2, x2, 2
-	mov x3, 1
-	mov x4, 5
+	sub x1, x1, x5
+
+	mov x9, 2
+	mul x6, x5, x9
+	sub x2, x2, x6
+
+	mov x3, x5
+
+	mov x9, 5
+	mul x6, x5, x9
+	mov x4, x6
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// - Linea(vertical) 4
-	sub x1, x1, 1
-	sub x2, x2, 2
-	mov x3, 1
-	mov x4, 6
+	sub x1, x1, x5
+
+
+	mov x9, 2
+	mul x6, x5, x9
+	sub x2, x2, x6
+
+	mov x3, x5
+
+	mov x9, 6
+	mul x6, x5, x9
+	mov x4, x6
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
+
+	// ret // vvvvvvvvvv Parte no escalada aun vvvvvvvvvvv
 
 	// Ventana	
 
 	// Linea derecha
-	sub x1, x1, 3
-	sub x2, x2, 7
-	mov x3, 1
-	mov x4, 3
+	mov x9, 3
+	mul x6, x5, x9
+	sub x1, x1, x6
+
+	mov x9, 7
+	mul x6, x5, x9
+	sub x2, x2, x6
+
+	mov x3, x5
+
+	mov x9, 3
+	mul x6, x5, x9
+	mov x4, x6
+
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// Linea izquierda
-	sub x1, x1, 4
-	mov x3, 1
-	mov x4, 3
+	mov x9, 4
+	mul x6, x5, x9
+	sub x1, x1, x6
+
+	mov x3, x5
+
+	mov x9, 3
+	mul x6, x5, x9
+	mov x4, x6
+
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// Linea arriba
-	add x1, x1, 1
-	sub x2, x2, 1
-	mov x3, 3
-	mov x4, 1
+	add x1, x1, x5
+	sub x2, x2, x5
+
+	mov x9, 3
+	mul x6, x5, x9
+	mov x3, x6
+
+	mov x4, x5
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 	// Linea abajo
-	add x2, x2, 4
-	mov x3, 3
-	mov x4, 1
+	mov x9, 4
+	mul x6, x5, x9
+	add x2, x2, x6
+
+	mov x9, 3
+	mul x6, x5, x9
+	mov x3, x6
+
+	mov x4, x5
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
@@ -378,12 +508,16 @@ graphics.rocket:
 	// Cuadrado del medio
 	movz x10, 0x0078, lsl 16
 	movk x10, 0x0101
-	sub x2, x2, 3
-	mov x3, 3
-	mov x4, 3
+	mov x9, 3
+	mul x6, x5, x9
+	sub x2, x2, x6
+	mov x3, x6
+	mov x4, x6
 	bl utils.save_registers
 	bl rectangle
 	bl utils.restore_registers
 
 
+	ldur x30, [sp]
+	sub sp, sp, 8
 	ret
