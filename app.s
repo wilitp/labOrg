@@ -20,28 +20,27 @@ main:
 	mov x4, 50
 	mov x7, 20	
 	mov x12, 0
+	mov x19, 0
 
 	mov x6, 2000	//cantidad de veces qeu ejecuto el ciclo principal
-	mov x5, 1		//en x5 yo tengo el delay entre frames, como voy incrementando el delay entre frames parece que se enlentece el cohete
+	mov x5, 2	//en x5 yo tengo el delay entre frames, como voy incrementando el delay entre frames parece que se enlentece el cohete
 main_loop:
-
 	bl utils.save_registers
-	bl graphics.background	//todo el fondo en negro, las estrellas y la luna
-	mov x5, 4
+	bl graphics.background	//todo el fondo en negro, las estrellas con su movimiento segun x6 y la luna
+	mov x5, 4	//tamaño del cohetiño
 	bl utils.save_registers
 	bl graphics.rocket	//aca deberia printearse el cohete
-	bl utils.restore_registers
-	bl graphics.rocket_complete_fire
-	bl utils.delay 
+	bl utils.restore_registers	
+
+	bl graphics.rocket_complete_fire	//fucncion que se encarga de mostrar el fuego segun lo que hay en x1,x2 y x7(nivel del fuego)
+	bl utils.delay //delay segun lo que tenga cargado en x5
 	bl utils.restore_registers
 	
-	//add x5,x5,1	//incremeto el delay en 1 milisegundo cada iteracion para generar efecto de realentizacion
-	//add x2,x2,2	//muevo el cohete 1 casillero para abajo
-	bl graphics.rocket_position_reg_changer
-	bl graphics.rocket_fire_reg_changer
+	bl graphics.rocket_position_reg_changer   //funcion que se encarga de ir cambiando la posicion del cohete
+	bl graphics.rocket_fire_reg_changer	//funcion que se encarga de darle el efecto del fuego
 
-	subs x6,x6,1
-	bl virtual_frame.show_frame
+	subs x6,x6,1	
+	bl virtual_frame.show_frame	//copio todo lo del frame virtual en el frame original
 	bne main_loop
 
 InfLoop: 

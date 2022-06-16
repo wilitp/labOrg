@@ -61,6 +61,8 @@ mov x12, 3270
    bl graphics.star_3x3
 
     //por ultimo llamo a la funcion que me grafica la luna con sus parametros
+
+	bl graphics.asteroid	//funcion que es encarga de mostrar el asteroide dsp de que el cohete pase por la posicion 300
     bl utils.save_registers
     //lunaa
 	mov x1, 320
@@ -223,7 +225,7 @@ ret
 graphics.rocket_position_reg_changer:
     cmp x2, 400
     bge rocket_position_reg_changer_stay
-    cmp x2, 385
+    cmp x2, 390
     bge rocket_position_reg_changer_kill_fire
     add x12, x12, 1
     lsr x18, x2, 6
@@ -595,3 +597,33 @@ graphics.rocket:
 	ldur x30, [sp]
 	add sp, sp, 8
 	ret
+
+
+
+.global graphics.asteroid
+graphics.asteroid:
+    cmp x2, 360
+    ble asteroid_exit
+    add x19, x19, 5
+    sub sp, sp, 8
+    stur x30,[sp]
+    bl utils.save_registers
+        //mov x1, x19
+        lsl x2, x19, 2
+        add x1, x19, 110 
+        mov x3, 12
+        movz x10, 0x00bf, lsl 16
+        movk x10, 0xbfbf
+        bl circle
+        lsl x2, x19, 2
+        add x1, x19, 112 
+        mov x3, 6
+        movz x10, 0x00a0, lsl 16
+        movk x10, 0xa0a0
+        bl circle
+        
+    bl utils.restore_registers
+    ldur x30,[sp]
+    add sp, sp, 8
+asteroid_exit:
+    ret
