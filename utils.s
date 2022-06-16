@@ -32,6 +32,7 @@ utils.pixelpaint:
 	lsl x0, x0, 2
 	add x0, x20, x0
 	stur w10, [x0]
+	ret
 
 //args:
 	//x5: microseconds
