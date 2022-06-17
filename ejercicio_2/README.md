@@ -1,7 +1,12 @@
-# Lab Org. y Arq. de Computadoras
+# Lab Org. y Arq. de Computadoras ej2
+
+##Integrantes:
+- Alejo Corral(43561688)
+- Guillermo de Ipola(43524608)
+- Victoria Lopez(44274057)
 
 ## Descripción de la animación
-Un sospechoso viajero en espacial llega a lo que parece ser una luna.
+Un sospechoso viajero espacial llega a lo que parece ser una luna.
 
 ## Uso
 **Para correr el proyecto ejecutar**
